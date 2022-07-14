@@ -160,3 +160,51 @@ qsub -V -N quickmirKG.r runQuickMIRSeq.sh -j -o /data/buck/abuck_smallrna/analys
 ```
 
 
+## quickmirseq output
+
+quickmirseq produces multiple resulting files, to a point which can be overwhelming. Here I hope to provide some guidance on which are key result files and additional information provided by this pipeline.
+
+index.html is key in exploring the results in an user-friendly, the authors of quickmirseq made a good job on providing an easy to use interphase to the pipeline results. You can open this file by double clicking it. I invite you to play around with the display of this file, many of it's contents are clickable. For example, you can rearrange tables by clicking on columns (e.g. click on miRNA_detected to see which of the libraries is the one with the highest number of detected miRNAs). 
+
+index.html requires other files to be present in the same location, so some of it's functionalities may break if this is requirement is not met.
+
+However if you are analyzing multiple libraries copying the whole output quickmirseq is not the best idea since it holds some big files (e.g. uncompressed fastq files, why the pipeline keeps these uncompressed?). What I usually do is to move the trimmed and bowtie_temp directories one level above before copying the output dir to your personal computer. Something like:
+```
+# within output run:
+mv trimmed ..
+mv bowtie_temp ..
+```
+
+The index.html file has different sections: summary, QC metrics, Filtered Expression Table, Raw Data Files, References.
+
+Summary contains a table with a row per library, this contains information such as the read length distribution (readLengthDist), read annotation distribution (readAnnoDist), number of total reads, reads assigned to miRNA, miRNA hairpin, small RNA (), messenger RNAs, unaligned, number of miRNAs detected, number of unique reads, numer of unique reads mapped to miRNA, hairpin, small RNA, mRNA, or unaligned. 
+
+Click on readLengthDist to display the read length distribution for a given library.
+
+
+
+## quickmirseq questions
+
+- Is it possible to provide trimmed reads to quickmirseq?
+- Answer:
+
+- The unaligned bar in the resulting index.html file mean that these reads do not align to miRNA, hairpin, small RNA, mRNA, but is it possible that some of the reads within this bar aligned to the genome?
+- Answer:
+
+- What is contained within small RNA?
+- Answer: according to the contents of smallRNA.fa, this includes:
+tRNA
+Mt_rRNA
+Mt_tRNA
+snRNA
+snoRNA
+rRNA
+URS000075E8C1_10090 Mus musculus nuclear encoded rRNA 5S 136 (n-R5s136), ribosomal RNA
+URS000075CEB1_10090 Mus musculus 45S pre-ribosomal RNA (Rn45s), ribosomal RNA
+URS000004B853_10090 Mus musculus 28S ribosomal RNA (Rn28s1), ribosomal RNA
+URS00000F9D45_10090 Mus musculus predicted gene, 25018 (Gm25018), ribosomal RNA. (multiple genes)
+URS0000436019_10090 Mus musculus 5.8S ribosomal RNA (Rs5-8s1), ribosomal RNA
+URS00002A2E83_10090 Mus musculus 18S ribosomal RNA (Rn18s), ribosomal RNA
+URS0000ABD8A8_10090 Mus musculus 4.5S RNA
+
+
